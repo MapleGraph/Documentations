@@ -17,11 +17,8 @@ Our documentation is meticulously organized to ensure clarity and ease of unders
 
 Below is a list of all features currently documented in this repository. Click on a feature name to navigate directly to its HTML documentation.
 
-- [Feature 1](Project/Feature1/Documentation/index.html)
-- [Feature 2](Project/Feature2/Documentation/index.html)
-- [Feature 3](Project/Feature3/Documentation/index.html)
-- [Feature 4](Project/Feature4/Documentation/index.html)
-- [Feature 5](Project/Feature5/Documentation/index.html)
+- [Paga Bank Transfer](https://html-preview.github.io/?url=https://github.com/MapleGraph/Documentations/blob/main/Paga/Bank%20Transfer/Doroki%20Bank%20Transfer%20Payment%20Integration%20%F0%9F%8F%A6%F0%9F%92%B8%208d056389c8584de08f15767bf5310c27.html)
+- [Paga USSD Payments](https://github.com/MapleGraph/Documentations/blob/main/Paga/USSD%20Payments/Doroki%20USSD%20Payment%20Integration%20%F0%9F%8F%A6%F0%9F%92%B8%20379025621a10419db3d631a40cddeace.html)
 
 Each feature's documentation is accessible via the provided links, leading directly to the HTML file containing the detailed documentation.
 
