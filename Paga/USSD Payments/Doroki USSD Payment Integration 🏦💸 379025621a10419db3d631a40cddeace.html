@@ -1,0 +1,763 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Doroki USSD Payment Integration 🏦💸</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+    margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: rgba(35, 131, 226, .07); }
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-transparentGray { background-color: rgba(227, 226, 224, 0); }
+.select-value-color-translucentGray { background-color: rgba(255, 255, 255, 0.0375); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="37902562-1a10-419d-b3d6-31a40cddeace" class="page sans"><header><h1 class="page-title">Doroki USSD Payment Integration 🏦💸</h1><p class="page-description"></p><table class="properties"><tbody><tr class="property-row property-row-created_time"><th><span class="icon property-icon"><svg role="graphics-symbol" viewBox="0 0 16 16" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.45);flex-shrink:0" class="typesCreatedAt"><path d="M8 15.126C11.8623 15.126 15.0615 11.9336 15.0615 8.06445C15.0615 4.20215 11.8623 1.00293 7.99316 1.00293C4.13086 1.00293 0.938477 4.20215 0.938477 8.06445C0.938477 11.9336 4.1377 15.126 8 15.126ZM8 13.7383C4.85547 13.7383 2.33301 11.209 2.33301 8.06445C2.33301 4.91992 4.84863 2.39746 7.99316 2.39746C11.1377 2.39746 13.6738 4.91992 13.6738 8.06445C13.6738 11.209 11.1445 13.7383 8 13.7383ZM4.54102 8.91211H7.99316C8.30078 8.91211 8.54004 8.67285 8.54004 8.37207V3.8877C8.54004 3.58691 8.30078 3.34766 7.99316 3.34766C7.69238 3.34766 7.45312 3.58691 7.45312 3.8877V7.83203H4.54102C4.2334 7.83203 4.00098 8.06445 4.00098 8.37207C4.00098 8.67285 4.2334 8.91211 4.54102 8.91211Z"></path></svg></span>Created</th><td><time>@May 30, 2024 3:55 PM</time></td></tr><tr class="property-row property-row-multi_select"><th><span class="icon property-icon"><svg role="graphics-symbol" viewBox="0 0 16 16" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.45);flex-shrink:0" class="typesMultipleSelect"><path d="M1.91602 4.83789C2.44238 4.83789 2.87305 4.40723 2.87305 3.87402C2.87305 3.34766 2.44238 2.91699 1.91602 2.91699C1.38281 2.91699 0.952148 3.34766 0.952148 3.87402C0.952148 4.40723 1.38281 4.83789 1.91602 4.83789ZM5.1084 4.52344H14.3984C14.7607 4.52344 15.0479 4.23633 15.0479 3.87402C15.0479 3.51172 14.7607 3.22461 14.3984 3.22461H5.1084C4.74609 3.22461 4.45898 3.51172 4.45898 3.87402C4.45898 4.23633 4.74609 4.52344 5.1084 4.52344ZM1.91602 9.03516C2.44238 9.03516 2.87305 8.60449 2.87305 8.07129C2.87305 7.54492 2.44238 7.11426 1.91602 7.11426C1.38281 7.11426 0.952148 7.54492 0.952148 8.07129C0.952148 8.60449 1.38281 9.03516 1.91602 9.03516ZM5.1084 8.7207H14.3984C14.7607 8.7207 15.0479 8.43359 15.0479 8.07129C15.0479 7.70898 14.7607 7.42188 14.3984 7.42188H5.1084C4.74609 7.42188 4.45898 7.70898 4.45898 8.07129C4.45898 8.43359 4.74609 8.7207 5.1084 8.7207ZM1.91602 13.2324C2.44238 13.2324 2.87305 12.8018 2.87305 12.2686C2.87305 11.7422 2.44238 11.3115 1.91602 11.3115C1.38281 11.3115 0.952148 11.7422 0.952148 12.2686C0.952148 12.8018 1.38281 13.2324 1.91602 13.2324ZM5.1084 12.918H14.3984C14.7607 12.918 15.0479 12.6309 15.0479 12.2686C15.0479 11.9062 14.7607 11.6191 14.3984 11.6191H5.1084C4.74609 11.6191 4.45898 11.9062 4.45898 12.2686C4.45898 12.6309 4.74609 12.918 5.1084 12.918Z"></path></svg></span>Tags</th><td><span class="selected-value select-value-color-green">Paga</span><span class="selected-value select-value-color-gray">Payment Integration</span></td></tr></tbody></table></header><div class="page-body"><h2 id="2166c28f-3e6e-469d-ae23-d40ecc4851a6" class="">📚 Overview</h2><p id="202dcb9c-24ff-444f-8665-e3f9f5ca84ae" class="">This feature enables users to accept payments through bank transfers. In this document, we will cover the following aspects:</p><ul id="8f2c762a-e668-47fd-beb6-17f208b213bf" class="bulleted-list"><li style="list-style-type:disc">Workflow and Process</li></ul><ul id="021e49a1-7187-4687-b201-ee38c2a79811" class="bulleted-list"><li style="list-style-type:disc">Setup and Configuration</li></ul><ul id="16114212-a400-4a5d-83d5-f4f009705e63" class="bulleted-list"><li style="list-style-type:disc">Testing and Validation</li></ul><ul id="df1247b5-4d5d-43db-858e-ca063176ad77" class="bulleted-list"><li style="list-style-type:disc">API Documentation</li></ul><h2 id="ac537161-f341-46af-9d2b-cfb403c3d1b5" class="">🔍 Workflow and Process</h2><ol type="1" id="e0c73711-947b-4cf8-864a-c3dfcf33d63b" class="numbered-list" start="1"><li>The merchant selects the &quot;USSD&quot; payment option during checkout.</li></ol><ol type="1" id="6dc159ed-2534-4683-a7e9-5bbde062c8aa" class="numbered-list" start="2"><li>The system verifies the availability of the &quot;USSD&quot; payment configuration.</li></ol><ol type="1" id="658930a9-172c-4a26-9a0e-5aadd70a08d1" class="numbered-list" start="3"><li>If the configuration is available, the system initiates the payment process by calling the &quot;/getBankUSSDPaymentBanks&quot; API with the businessName parameter.</li></ol><ol type="1" id="cf956dd9-b8bf-48b2-a3d9-09f50c64a2c2" class="numbered-list" start="4"><li>The API responds with a list of banks supporting USSD payments.</li></ol><ol type="1" id="efd647d0-2cfe-42e6-afb7-9185ded12a44" class="numbered-list" start="5"><li>The merchant selects the bank provided by the consumer from the displayed bank list.</li></ol><ol type="1" id="e669efd0-d9ea-48d6-bc36-4ac338f0e24f" class="numbered-list" start="6"><li>The system calls the &quot;secured/initiateBankUSSDPayment&quot; API, passing the amount, terminalId, and the chosen bank&#x27;s publicId.</li></ol><ol type="1" id="cac2702f-d036-4f1c-bbfa-2b08358e17ee" class="numbered-list" start="7"><li>The API responds with a unique USSD code.</li></ol><ol type="1" id="fc8c0daa-fe33-47b6-93fb-755f2054a0a1" class="numbered-list" start="8"><li>The USSD code is provided to the consumer, who enters it on their mobile phone and follows the prompts to approve the payment.</li></ol><ol type="1" id="5a333be7-5a31-44c2-9be5-41b6c1304c5d" class="numbered-list" start="9"><li>On the same page, the merchant can check the payment status by clicking the &quot;Check Status&quot; button.</li></ol><ol type="1" id="275f4ac8-de6a-421d-988e-1dd259c98989" class="numbered-list" start="10"><li>The &quot;Check Status&quot; button triggers a call to the &quot;secured/checkDynamicBankTransferPayment&quot; API with the paymentRequestId and amount.</li></ol><ol type="1" id="a8ef4341-2639-4cc9-85e5-2e0be3a011b5" class="numbered-list" start="11"><li>The API returns the payment status as either &quot;Payment completed&quot; or &quot;Payment pending&quot;.</li></ol><ol type="1" id="979b0fdf-a6b0-40e2-adbb-c8b35222a63f" class="numbered-list" start="12"><li>If the status is &quot;Payment pending&quot;, the page remains unchanged.</li></ol><ol type="1" id="f511e17a-e3c4-47a9-9ac5-e16a42ed823b" class="numbered-list" start="13"><li>If the status is &quot;Payment completed&quot;, the order is marked as complete.</li></ol><figure id="ed45c7f0-3159-4f6f-8a2d-c8279f430adc" class="image"><a href="Doroki%20USSD%20Payment%20Integration%20%F0%9F%8F%A6%F0%9F%92%B8%20379025621a10419db3d631a40cddeace/ussd_flowchart.svg"><img style="width:576px" src="Doroki%20USSD%20Payment%20Integration%20%F0%9F%8F%A6%F0%9F%92%B8%20379025621a10419db3d631a40cddeace/ussd_flowchart.svg"/></a></figure><h2 id="601676bf-d80a-4a71-b1d9-4d92ca9e06e4" class="">⚙️ Setup and Configuration</h2><h3 id="6836fa80-2ac3-4632-a510-4665005edb28" class="">Prerequisites</h3><ul id="5b051682-05e9-43d9-b301-f8b59452678c" class="bulleted-list"><li style="list-style-type:disc">Get a Chain with country as “Nigeria” and currency as “NGN”</li></ul><ul id="626ad347-3814-463a-b32c-2dbbb57bb0c5" class="bulleted-list"><li style="list-style-type:disc">USSD Payment mode should be enabled</li></ul><h3 id="4e04fb10-269c-4af8-88c0-3843e1d6ef3c" class="">Configuration</h3><ul id="a318d867-6a41-4cef-a527-fdee5a3badff" class="bulleted-list"><li style="list-style-type:disc">Setup Payment Configuration from backend</li></ul><table id="37fc29ff-01e6-4390-be2b-dadc93067577" class="simple-table"><tbody><tr id="3a83ef44-e318-4fcd-8c7b-9383823a154e"><td id="AM]l" class="">ID</td><td id="&lt;fWI" class="">storeId</td><td id="O@c&lt;" class="">chainId</td><td id="XOyn" class="">deviceId</td><td id="Zr|@" class="">paymentMode</td><td id="ujLx" class="">paymentAggregator</td><td id="JQRn" class="">aggregatorId</td></tr><tr id="e7e4336f-a06a-4430-b761-10915a8a2f09"><td id="AM]l" class=""></td><td id="&lt;fWI" class=""></td><td id="O@c&lt;" class=""></td><td id="XOyn" class=""></td><td id="Zr|@" class="">PAYMENT_PAGABANKUSSD</td><td id="ujLx" class="">DOROKI</td><td id="JQRn" class="">311104</td></tr></tbody></table><h2 id="4bb9f8a4-d502-4b57-ac57-08b17bbce972" class="">🧪 Testing and Validation</h2><h3 id="5e5dc0c7-6553-41bf-a8ac-fb3826e4ae34" class="">Test Cases</h3><ul id="9764c284-b989-4f4b-bc67-314d4372f87b" class="bulleted-list"><li style="list-style-type:disc">Verify that the system correctly checks for the availability of the USSD payment configuration.</li></ul><ul id="b1c0823e-69a4-4f0f-8be0-e09375a529a9" class="bulleted-list"><li style="list-style-type:disc">Test the behavior when the USSD payment configuration is not available (error message should be displayed, and the payment process should be terminated).</li></ul><ul id="4e2cee19-da96-4c07-b05d-7c9c8cfe16f4" class="bulleted-list"><li style="list-style-type:disc">Verify that the list of banks is correctly displayed on the Bank List Page.</li></ul><ul id="5a129dba-b43c-444b-98f3-7f9e992ded93" class="bulleted-list"><li style="list-style-type:disc">Test error handling scenarios, such as invalid reference numbers or transfers with incorrect amounts.</li></ul><ul id="5c025ef9-0810-4aa2-9110-e58bdfa723b2" class="bulleted-list"><li style="list-style-type:disc">Verify that the user&#x27;s order status is updated correctly after a successful transfer detection.</li></ul><h3 id="6767143a-7bd2-425a-9fdd-311efea32829" class="">Testing Process</h3><p id="3e60a57f-a331-4a67-b068-5a72c3e3810c" class="">To complete the USSD payment testing process, follow these steps:</p><ol type="1" id="3cccee9b-7e22-47db-b155-724e1853fc63" class="numbered-list" start="1"><li><strong>Initiate USSD Payment from the App</strong><ul id="5df161b3-f449-407c-a743-b8d304f20b28" class="bulleted-list"><li style="list-style-type:disc">Initiate a USSD payment from the application.</li></ul><ul id="bef2b4df-de8f-4d32-a9d1-32a93e337e68" class="bulleted-list"><li style="list-style-type:disc">Choose any bank for testing purposes.</li></ul></li></ol><ol type="1" id="a20dcd3c-4f30-4c8e-b413-587354397727" class="numbered-list" start="2"><li><strong>Obtain the USSD Code</strong><ul id="ae73fce3-8daf-46b6-94e6-1e7381f7f72f" class="bulleted-list"><li style="list-style-type:disc">After initiating the payment, you will receive a USSD code on the &quot;Check Status&quot; page.</li></ul><ul id="ab9da9e3-a020-4ae3-89bd-80e0454847cc" class="bulleted-list"><li style="list-style-type:disc">The USSD code will follow the format: &quot;*320*000*724+67429891#&quot;</li></ul></li></ol><ol type="1" id="1dd54f65-22a1-4a14-afd1-f902fa1d479b" class="numbered-list" start="3"><li><strong>Extract Customer Code and Short Code</strong><ul id="08b5741d-5150-45e4-82f0-7d6bf9bf2844" class="bulleted-list"><li style="list-style-type:disc">From the USSD code, extract the 8-digit customer code after the &quot;+&quot; sign and before the &quot;#&quot; sign (e.g., 67429891).</li></ul><ul id="77b11893-b8ae-45a8-9778-b4112d1c1543" class="bulleted-list"><li style="list-style-type:disc">The first three digits of the USSD code represent the short code (e.g., 320).</li></ul></li></ol><ol type="1" id="aec62e26-9a2f-4ffc-bc2a-d0be340fdd70" class="numbered-list" start="4"><li><strong>Call the &quot;getDetails&quot; API</strong><ul id="a3286570-c49f-483a-a373-89e438104313" class="bulleted-list"><li style="list-style-type:disc">Run the following cURL request, replacing the customerRef and shortCode with the values extracted from the USSD code:<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="20129b23-a33e-4097-847f-5878daac8f0d" class="code"><code class="language-Bash" style="white-space:pre-wrap;word-break:break-all">curl --location &#x27;&lt;https://qa1.mypaga.com/paga-webservices/coralPay/secured/getDetails&gt;&#x27; \\
+     --header &#x27;Content-Type: application/json&#x27; \\
+     --header &#x27;Authorization: Basic RjI1MjkyNjEtQ0M0RS00MzEzLTg0OTktOTJCMkU3RTRCRkQ4OlBhc3N3b3JkMQ==&#x27; \\
+     --data &#x27;{ &quot;merchantId&quot;: &quot;1057PGA10000001&quot;, &quot;customerRef&quot;: &quot;67429891&quot;, &quot;shortCode&quot;: &quot;329&quot; }&#x27;
+</code></pre></li></ul><ul id="188b4a10-c06d-4fdb-9c8c-ab9b7868783a" class="bulleted-list"><li style="list-style-type:disc">Expected Response:<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="0c6505c5-df96-42a1-8eb1-ef4f2930696d" class="code"><code class="language-JSON" style="white-space:pre-wrap;word-break:break-all">{
+  &quot;customerName&quot;: &quot;Joe Leo&quot;,
+  &quot;amount&quot;: 121.0,
+  &quot;displayMessage&quot;: &quot;Payment for Joe Leo&quot;,
+  &quot;responseCode&quot;: &quot;00&quot;,
+  &quot;traceId&quot;: &quot;4C86EDF6-771E-EF11-86D2-BF9ADD20706C_1717068948977&quot;
+}
+</code></pre></li></ul><ul id="e04f5be4-4815-45d3-86e6-fab0b186c6e6" class="bulleted-list"><li style="list-style-type:disc">Note the traceId value from the response.</li></ul></li></ol><ol type="1" id="7afd3fd8-5c5b-45f5-b8ee-9a000051a973" class="numbered-list" start="5"><li><strong>Call the &quot;paymentNotification&quot; API</strong><ul id="a8627d99-6c5f-446b-bbfe-5c85a4459a5e" class="bulleted-list"><li style="list-style-type:disc">Run the following cURL request, replacing the traceId, customerRef, and paymentReference with the appropriate values:<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="c67df8ad-12ac-44bc-88df-737118c5dd8a" class="code"><code class="language-Bash" style="white-space:pre-wrap;word-break:break-all">curl --location &#x27;&lt;https://qa1.mypaga.com/paga-webservices/coralPay/secured/paymentNotification&gt;&#x27; \\
+     --header &#x27;Content-Type: application/json&#x27; \\
+     --header &#x27;Authorization: Basic RjI1MjkyNjEtQ0M0RS00MzEzLTg0OTktOTJCMkU3RTRCRkQ4OlBhc3N3b3JkMQ==&#x27; \\
+     --header &#x27;Cookie: route=1717068949.232.3130.280750|54a86a183ec676f78c6564f15a1b629b; paga-webservices-canary=always&#x27; \\
+     --data &#x27;{ &quot;paymentReference&quot;: &quot;87900590274750678099184958767864&quot;, &quot;customerRef&quot;: &quot;67429891&quot;, &quot;responseCode&quot;: &quot;00&quot;, &quot;merchantId&quot;: &quot;1057PGA10000001&quot;, &quot;mobileNumber&quot;: &quot;0809***7503&quot;, &quot;amount&quot;: &quot;121.00&quot;, &quot;passBackReference&quot;: &quot;e19f2d56-c420-4625-9ea5-cf1cf735b0e3&quot;, &quot;transactionDate&quot;: &quot;2020-10-26T22:22:23.2987732+01:00&quot;, &quot;billerCode&quot;: null, &quot;billerPrefix&quot;: null, &quot;traceId&quot;: &quot;4C86EDF6-771E-EF11-86D2-BF9ADD20706C_1717068948977&quot;, &quot;shortCode&quot;: &quot;889&quot;, &quot;currency&quot;: &quot;NGN&quot;, &quot;Channel&quot;: &quot;USSD&quot;, &quot;hash&quot;: &quot;9b03ebca981ab485a572d2a36d7a97051d1a2dba9ad5515c720decd3de817ae4&quot; }&#x27;
+</code></pre></li></ul><ul id="3808679d-aeea-43e2-a909-328369a5d8c5" class="bulleted-list"><li style="list-style-type:disc">Expected Response: 200 Success</li></ul></li></ol><ol type="1" id="033a1b7b-cea5-484b-842e-f99f1f69bcec" class="numbered-list" start="6"><li><strong>Check Payment Status</strong><ul id="d01fbb55-fb38-4c02-acc7-a0feb69a77ae" class="bulleted-list"><li style="list-style-type:disc">Upon receiving a successful (200) response from the &quot;paymentNotification&quot; API, you can check the payment status in the application.</li></ul><ul id="6ab58813-3096-4b2f-8d14-0c73f43a4284" class="bulleted-list"><li style="list-style-type:disc">The payment should be marked as successful.</li></ul></li></ol><p id="d3314da5-3b32-434d-9fb7-3d3d114905dc" class="">By following these testing steps, you can emulate the USSD payment process and validate the functionality of the feature.</p><h2 id="15f35e43-d1c8-4d38-bd9e-f16424334227" class="">📚 API Documentation</h2><h3 id="3b8deb53-fcbb-45b0-8f49-a95ec4b4df82" class=""><strong>Get USSD Payment Banks API Documentation</strong></h3><h3 id="f9e1ee3a-f787-48da-9c22-b8c485120d75" class="">Endpoint</h3><p id="c55242a1-5dee-402c-93f7-fc680c57ba03" class=""><a href="https://qa-app.doroki.com/mobile-gateway-services/getBankUSSDPaymentBanks">https://qa-app.doroki.com/mobile-gateway-services/getBankUSSDPaymentBanks</a></p><h3 id="a3d8dd7b-8f53-4e47-b17f-906485f186ba" class="">Method</h3><p id="f2917f3c-9eb0-416f-8f6f-88296f1f519a" class="">GET</p><h3 id="7545256a-6e96-418f-a8dd-cbc3a839d462" class="">Headers</h3><ul id="f2625ea5-38a0-468b-84b2-e5ebd64b256c" class="bulleted-list"><li style="list-style-type:disc"><strong>Accept:</strong> application/json</li></ul><ul id="a28622cd-03fc-4816-bcb5-be743c4cb4a8" class="bulleted-list"><li style="list-style-type:disc"><strong>hash:</strong> (empty)</li></ul><h3 id="faf9e82a-5288-4b22-9062-f7ccaedf2bcc" class="">Query Parameters</h3><ul id="6499c548-f2b0-43d5-93e3-dcdbb912508d" class="bulleted-list"><li style="list-style-type:disc"><strong>businessName:</strong> String (optional)</li></ul><ul id="9cd972d2-d5a6-481f-baf9-b942f6db36ab" class="bulleted-list"><li style="list-style-type:disc"><strong>latitude:</strong> String (optional)</li></ul><ul id="0c3607ba-b9ce-4a90-8521-3eff91b9b33a" class="bulleted-list"><li style="list-style-type:disc"><strong>longitude:</strong> String (optional)</li></ul><ul id="d33e4982-ee83-4c5a-9143-7e9df9cabf29" class="bulleted-list"><li style="list-style-type:disc"><strong>accuracy:</strong> String (optional)</li></ul><ul id="bea4807a-3072-480f-a335-141ab19b7cbb" class="bulleted-list"><li style="list-style-type:disc"><strong>appBuildVersion:</strong> String (optional)</li></ul><h3 id="46004bfc-ae64-4be5-9158-75cc804d3c5e" class="">Request Body</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="d412c514-d75c-4aec-995e-4d0c38a704c6" class="code"><code class="language-JSON" style="white-space:pre-wrap;word-break:break-all">{
+  &quot;businessName&quot;: &quot;DSTV&quot;,
+  &quot;latitude&quot;: &quot;8.98627&quot;,
+  &quot;longitude&quot;: &quot;38.76831&quot;,
+  &quot;accuracy&quot;: &quot;30.00 m&quot;,
+  &quot;appBuildVersion&quot;: &quot;48863051&quot;
+}
+</code></pre><h3 id="23cec592-6e89-412b-ad97-3acbb2f70e60" class="">Response Body</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="df877a8e-ab8f-48a5-8c04-d3e6fc97b56e" class="code"><code class="language-JSON" style="white-space:pre-wrap;word-break:break-all">{
+  &quot;responseCode&quot;: 0,
+  &quot;message&quot;: &quot;SUCCESS&quot;,
+  &quot;banks&quot;: [
+    {
+      &quot;bankPublicId&quot;: &quot;40090E2F-7446-4217-9345-7BBAB7043C4C&quot;,
+      &quot;bankName&quot;: &quot;Access Bank&quot;,
+      &quot;bankLogoUrl&quot;: &quot;&lt;https://www.qa1.mypaga.com/paga-web/resources/normal/img/bank/40090E2F-7446-4217-9345-7BBAB7043C4C_circular@2x.png&gt;&quot;,
+      &quot;bankShortName&quot;: &quot;Access&quot;,
+      &quot;interInstitutionCode&quot;: &quot;999044&quot;,
+      &quot;sortCode&quot;: &quot;044&quot;,
+      &quot;ussdFundingCode&quot;: &quot;901&quot;,
+      &quot;creditable&quot;: true,
+      &quot;debitable&quot;: true
+    },
+    // Additional banks...
+  ]
+}
+</code></pre><h3 id="911ee99f-31f8-49a9-8a68-17f30754b943" class="">Initiate USSD Payment API Documentation</h3><h3 id="880589bd-b3aa-46c6-8ad0-4d2a6127245a" class="">Endpoint</h3><p id="eb1100c3-c543-4d53-aec3-c5c8ca0207e0" class=""><a href="https://qa-app.doroki.com/mobile-gateway-services/doroki-merchant-api/secured/initiateBankUSSDPayment">https://qa-app.doroki.com/mobile-gateway-services/doroki-merchant-api/secured/initiateBankUSSDPayment</a></p><h3 id="1b1571ec-72df-4240-af7d-31f5bd9d37f0" class="">Method</h3><p id="5a668c2a-b62e-4975-ae5c-97a48f208f28" class="">POST</p><h3 id="0ed64da7-921c-414c-b350-f068018d84af" class="">Headers</h3><ul id="7e89993a-e76f-418f-9842-80ced5b0247c" class="bulleted-list"><li style="list-style-type:disc"><strong>Accept:</strong> application/json</li></ul><ul id="f2a8f15d-7dbb-4d4c-90b6-033d7f145bd9" class="bulleted-list"><li style="list-style-type:disc"><strong>Content-Type:</strong> application/json</li></ul><ul id="4a3490dc-0ccc-4f68-bc4f-474a8bffa5e6" class="bulleted-list"><li style="list-style-type:disc"><strong>principal:</strong> test1470</li></ul><ul id="e15e2d78-f679-4ccd-b9f4-1e5f4323db61" class="bulleted-list"><li style="list-style-type:disc"><strong>credential:</strong> Password@1</li></ul><ul id="3023a240-7989-4a3d-ba17-221ca7caf942" class="bulleted-list"><li style="list-style-type:disc"><strong>credentialType:</strong> password</li></ul><ul id="9a183b3f-2757-46dd-b230-fc373b01cacb" class="bulleted-list"><li style="list-style-type:disc"><strong>deviceId:</strong> 522fe51508528ce6</li></ul><ul id="09ab90a4-0be6-4e72-9a93-5e5b4ad0ba12" class="bulleted-list"><li style="list-style-type:disc"><strong>validationType:</strong> EMAIL</li></ul><ul id="96c9b321-b278-4e3d-99f1-462dd86082bb" class="bulleted-list"><li style="list-style-type:disc"><strong>hash:</strong> (empty)</li></ul><ul id="b3ed62a3-57ab-41b1-8669-c3d21441e5ab" class="bulleted-list"><li style="list-style-type:disc"><strong>appVersion:</strong> 1.2.0</li></ul><h3 id="1e351111-3d70-4b2d-9f23-39e128055cba" class="">Request Body</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="ea6dd3b1-de09-4a13-a9ed-41246c6d4d3f" class="code"><code class="language-JSON" style="white-space:pre-wrap;word-break:break-all">{
+  &quot;amount&quot;:&quot;500.0&quot;,
+  &quot;terminalId&quot;: &quot;0813323&quot;,
+  &quot;bankPublicId&quot;:&quot;757E1F82-C5C1-4883-B891-C888293F2F00&quot;,
+  &quot;customerPhoneNumber&quot;: &quot;+2349097487986&quot;,
+  &quot;latitude&quot;: &quot;8.98627&quot;,
+  &quot;longitude&quot;: &quot;38.76831&quot;,
+  &quot;accuracy&quot;: &quot;30.00 m&quot;,
+  &quot;appBuildVersion&quot;: &quot;48737026&quot;
+}
+</code></pre><h3 id="88035745-2f3c-4229-b073-573d523545c6" class="">Response Body</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="bbd471d2-93f6-42c2-8f0a-aa1086634858" class="code"><code class="language-JSON" style="white-space:pre-wrap;word-break:break-all">{
+  &quot;requestId&quot;: &quot;b7362f7f-a2b0-4721-8476-f40333a9e815&quot;,
+  &quot;responseCode&quot;: 0,
+  &quot;message&quot;: &quot;SUCCESS&quot;,
+  &quot;ussdString&quot;: &quot;*901*000*724+95029753#&quot;,
+  &quot;expiryDate&quot;: 1717075646590,
+  &quot;referenceNumber&quot;: &quot;633af167-8828-4502-8e8a-da5af3298264&quot;,
+  &quot;paymentRequestId&quot;: &quot;E960C129-841E-EF11-86D2-BF9ADD20706C&quot;,
+  &quot;amount&quot;: 121.0,
+  &quot;fee&quot;: 0.0,
+  &quot;tax&quot;: 0.0
+}
+</code></pre><h3 id="b98cd5de-b934-4039-9f1f-9f468a8dc13c" class="">Check USSD Payment Status API Documentation</h3><h3 id="3342c161-d4ae-4e5c-ab1a-6a3981f99e14" class="">Endpoint</h3><p id="272c98c0-4791-4ef6-ab3e-b855daae2e99" class=""><a href="https://qa-app.doroki.com/mobile-gateway-services/merchant-lite-rest/secured/checkBankUSSDPayment">https://qa-app.doroki.com/mobile-gateway-services/merchant-lite-rest/secured/checkBankUSSDPayment</a></p><h3 id="2b49475d-6deb-4a2f-b34b-9d6dc3409107" class="">Method</h3><p id="612399b9-2889-434c-9d9e-3951ea980f3b" class="">POST</p><h3 id="c28f3db4-8ddb-4caf-aa30-393a2e810bc8" class="">Headers</h3><ul id="6f28a6ae-04d8-4f67-8c99-df8a808f17bb" class="bulleted-list"><li style="list-style-type:disc"><strong>Content-Type:</strong> application/json</li></ul><ul id="b8388663-c9ee-475c-b4e5-ebf0030de0c1" class="bulleted-list"><li style="list-style-type:disc"><strong>principal:</strong> test1470</li></ul><ul id="066db1bd-f6f4-4a97-a3df-d218bd4ac1b9" class="bulleted-list"><li style="list-style-type:disc"><strong>credential:</strong> Password@1</li></ul><ul id="b4c2f00c-1f53-475d-8f6f-fed7a7b209be" class="bulleted-list"><li style="list-style-type:disc"><strong>deviceId:</strong> 522fe51508528ce6</li></ul><ul id="236ae13c-72e4-4e32-8c5b-41e77aa082be" class="bulleted-list"><li style="list-style-type:disc"><strong>credentialType:</strong> password</li></ul><ul id="ba776dbd-c876-4966-a0ad-7689cbcbf00e" class="bulleted-list"><li style="list-style-type:disc"><strong>validationType:</strong> EMAIL</li></ul><ul id="ac2fb2fd-fcda-4c10-93d5-fc272b820208" class="bulleted-list"><li style="list-style-type:disc"><strong>hash:</strong> 6408fd2f8bb58b18e22760015a1a6ee64c08c3307dc0258789a8c789ce133730918e402908316872e5aa7847bd41415dc9a97e64a79f1d8b0baed9e4f5d6a94f</li></ul><ul id="75deb797-6582-433a-acb1-26943527d77f" class="bulleted-list"><li style="list-style-type:disc"><strong>publicAccountId:</strong> 07F12DDB-B22B-4729-82D2-DBECB25EDC13</li></ul><h3 id="4878cf07-cc1a-4eaa-a04c-3f8799fd8fb8" class="">Request Body</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="dd3a8102-91f3-4f27-8c86-3b648d5b48a3" class="code"><code class="language-JSON" style="white-space:pre-wrap;word-break:break-all">{
+  &quot;paymentRequestId&quot;: &quot;E960C129-841E-EF11-86D2-BF9ADD20706C&quot;
+}
+</code></pre><h3 id="f39f8861-14cf-41ba-8377-5747c7c4dd6f" class="">Response Body</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="a658532d-5dcb-41fc-ae1a-ae39d17877b7" class="code"><code class="language-JSON" style="white-space:pre-wrap;word-break:break-all">{
+  &quot;requestId&quot;: &quot;ed057d8b-d63b-4787-bb86-44692871d463&quot;,
+  &quot;responseCode&quot;: 410,
+  &quot;message&quot;: &quot;Sorry, this payment hasn&#x27;t been received or processed. Please check again later&quot;,
+  &quot;payedAmount&quot;: 0.0,
+  &quot;expectedAmount&quot;: 121.0,
+  &quot;accountNumber&quot;: &quot;*901*000*724+95029753#&quot;,
+  &quot;transactions&quot;: [],
+  &quot;createdDate&quot;: 1717073846683,
+  &quot;completedDate&quot;: null,
+  &quot;paymentStatus&quot;: &quot;PENDING&quot;
+}
+</code></pre><h3 id="f66d4541-7332-43d3-b93f-96d5321c5e78" class="">Cancel USSD Payment API Documentation</h3><h3 id="4a073e4e-8747-45e8-b47e-ba7d60797eee" class="">Endpoint</h3><p id="758bab3e-fdeb-4cdf-9a56-cef534fd741f" class=""><a href="https://qa-app.doroki.com/mobile-gateway-services/merchant-lite-rest/secured/cancelBankUSSDPayment">https://qa-app.doroki.com/mobile-gateway-services/merchant-lite-rest/secured/cancelBankUSSDPayment</a></p><h3 id="020892a7-dcfa-46a5-a54a-26ce568f44d3" class="">Method</h3><p id="a34d7a8e-652f-4a03-b062-bee0cc4bb2a9" class="">POST</p><h3 id="db72d4ab-aa5d-4097-a467-2a4005ecc3c5" class="">Headers</h3><ul id="54638693-88e6-422b-8ef8-dab2fde0f323" class="bulleted-list"><li style="list-style-type:disc"><strong>Content-Type:</strong> application/json</li></ul><ul id="bdfc34c3-e7b3-4d08-a55b-d3f43f6fe537" class="bulleted-list"><li style="list-style-type:disc"><strong>principal:</strong> test1470</li></ul><ul id="906db1ee-890b-4a3b-b00b-c15a1dd4fd0f" class="bulleted-list"><li style="list-style-type:disc"><strong>credential:</strong> Password@1</li></ul><ul id="6a419a85-2730-45b9-8cea-ea1693504379" class="bulleted-list"><li style="list-style-type:disc"><strong>deviceId:</strong> 522fe51508528ce6</li></ul><ul id="537d0b29-08e8-4302-a6dd-1c7c6a3a367f" class="bulleted-list"><li style="list-style-type:disc"><strong>credentialType:</strong> password</li></ul><ul id="7394992e-c2a3-4046-b7cd-c1d6d1744dbe" class="bulleted-list"><li style="list-style-type:disc"><strong>validationType:</strong> EMAIL</li></ul><ul id="113b75bc-f06a-430b-a956-bfa77447ec48" class="bulleted-list"><li style="list-style-type:disc"><strong>hash:</strong> afdcb66bf7a1f4de21dfc7b6ad05853ba724e1be92d9aa4562d632cae2611cca7ad300863aae45f835b8bd5d90f8f53c52f82f90b7372eb487122bf8f625908f</li></ul><ul id="d6275f39-0644-49ff-9bba-64af8bae29d9" class="bulleted-list"><li style="list-style-type:disc"><strong>publicAccountId:</strong> 07F12DDB-B22B-4729-82D2-DBECB25EDC13</li></ul><h3 id="4eb91594-57a2-4adb-bdd9-13392961f16b" class="">Request Body</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="cd53e514-ed0d-4a60-b25f-d779cc2398d3" class="code"><code class="language-JSON" style="white-space:pre-wrap;word-break:break-all">{
+  &quot;referenceNumber&quot;: &quot;633af167-8828-4502-8e8a-da5af3298264&quot;
+}
+</code></pre><h3 id="cab061ed-81f8-4dd1-b63e-ef6260cf0260" class="">Response Body</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="ec073c61-4d65-4508-a2bc-2ce7f47da264" class="code"><code class="language-JSON" style="white-space:pre-wrap;word-break:break-all">{
+  &quot;requestId&quot;: &quot;99c6203c-d409-4c79-ab2c-2f184105bc9a&quot;,
+  &quot;responseCode&quot;: 0,
+  &quot;message&quot;: &quot;SUCCESS&quot;
+}
+</code></pre><h2 id="7de47d5f-e429-4a26-9d8e-d2cd6b001687" class="">📚 Additional Resources</h2><ul id="c09d2d00-31e2-49e7-b831-6ce6d5b498d8" class="bulleted-list"><li style="list-style-type:disc"><a href="https://www.figma.com/proto/zCq55GIzTZx5KDfoHdLGl0/Doroki-Fine-Dine-Mv?page-id=1210[…]iewport=525%2C402%2C0.14&amp;t=FviSUK8hI4o1wZLu-1&amp;scaling=min-zoom">Figma Prototype</a> </li></ul><ul id="025d9168-3b37-4f3c-b0c4-fbb33b9d60fb" class="bulleted-list"><li style="list-style-type:disc"><a href="https://qa1.mypaga.com/home/">Paga Consumer Dashboard</a></li></ul><ul id="c53fd336-21a8-4e0d-9029-f18b04b1bf8b" class="bulleted-list"><li style="list-style-type:disc"><a href="https://documenter.getpostman.com/view/18410177/2s9YkrZei9#intro">API Documentation</a></li></ul></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
